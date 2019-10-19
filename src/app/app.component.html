@@ -58,7 +58,7 @@
   <hr>
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <p *ngIf="loadedPosts.length < 1 && !isFetching">No posts available!</p>
+      <p *ngIf="loadedPosts.length < 1 && !isFetching && !error">No posts available!</p>
       <ul class="list-group" *ngIf="loadedPosts.length >= 1 && !isFetching">
         <li class="list-group-item list-group-item-action"
         [ngClass]=listGrpClr(i)
@@ -77,6 +77,7 @@
       <div class="alert alert-danger" *ngIf="error">
         <h3>An error occured</h3>
         <p>{{error}}</p>
+        <button class="btn btn-outline-danger" type="button" (click)="error=null">close</button>
       </div>
     </div>
   </div>
