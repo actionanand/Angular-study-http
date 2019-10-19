@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Post } from './post.model';
 import { PostServiceService } from './post-service.service';
@@ -11,6 +12,7 @@ import { PostServiceService } from './post-service.service';
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
+  @ViewChild('postForm', {static: true}) postForm: NgForm;
 
   constructor(private postServ: PostServiceService) {}
 
@@ -20,7 +22,8 @@ export class AppComponent implements OnInit {
 
   onCreatePost(postData: Post) {
     // post Http request
-   this.postServ.createPost(postData.title, postData.content); 
+   this.postServ.createPost(postData.title, postData.content);
+   this.postForm.reset();
   }
 
   onFetchPosts() {
@@ -30,7 +33,13 @@ export class AppComponent implements OnInit {
   }
 
   onClearPosts() {
-    // Send Http request
+    // delete Http request
+    if(confirm('Are you sure to delete all posts?')){
+      this.postServ.deleteAllPosts().subscribe(()=>{
+        this.loadedPosts = [];
+      });
+    }
+    
   }
 
   listGrpClr(i: number){
@@ -41,7 +50,7 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeReadPost(){
-    this.postServ.readPost().subscribe(
+    this.postServ.readPosts().subscribe(
       allPosts=>{
         // console.log(posts);
         this.loadedPosts = allPosts;

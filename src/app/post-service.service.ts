@@ -23,7 +23,7 @@ export class PostServiceService {
     });
   }
 
-  readPost(){
+  readPosts(){
    return this.http.get<{[key: string]: Post}>('https://angular-study-http.firebaseio.com/posts.json')
         .pipe(
           map((responseData) =>{
@@ -39,5 +39,8 @@ export class PostServiceService {
         return postArray;
         }));
   }
+deleteAllPosts(){
+  return this.http.delete('https://angular-study-http.firebaseio.com/posts.json');
+}
 
 }
