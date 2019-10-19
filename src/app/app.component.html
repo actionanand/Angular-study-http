@@ -74,7 +74,7 @@
         <!-- <app-heart-beat></app-heart-beat> -->
         <!-- <app-couple-dots></app-couple-dots> -->
       </div>
-      <div class="alert alert-danger">
+      <div class="alert alert-danger" *ngIf="error">
         <h3>An error occured</h3>
         <p>{{error}}</p>
       </div>

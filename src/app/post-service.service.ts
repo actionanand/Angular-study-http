@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { Post } from './post.model';
 
@@ -9,17 +10,20 @@ import { Post } from './post.model';
 })
 export class PostServiceService {
 
+  servError = new Subject<string>();
+
   constructor(private http: HttpClient) { }
 
   createPost(title: string, content: string){
-
     const postData: Post={title: title, content: content};
-
     this.http.post(
       'https://angular-study-http.firebaseio.com/posts.json', 
     postData)
     .subscribe(responseData =>{
       console.log(responseData)
+    }, error =>{
+      console.log(error);
+      this.servError.next(error.error['error']);
     });
   }
 
