@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 import { Post } from './post.model';
+import { PostServiceService } from './post-service.service';
 
 @Component({
   selector: 'app-root',
@@ -13,57 +12,25 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private postServ: PostServiceService) {}
 
   ngOnInit() {
-
-    this.fetchPosts();
-
+    this.onFetchPosts();
   }
 
   onCreatePost(postData: Post) {
     // post Http request
-    this.http.post(
-      'https://angular-study-http.firebaseio.com/posts.json', 
-    postData)
-    .subscribe(responseData =>{
-      console.log(responseData)
-    });
+   this.postServ.createPost(postData.title, postData.content); 
   }
 
   onFetchPosts() {
     // get Http request
-    this.fetchPosts();
+    this.isFetching=true;
+    this.subscribeReadPost();
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchPosts(){
-    this.isFetching=true;
-
-    this.http.get<{[key: string]: Post}>('https://angular-study-http.firebaseio.com/posts.json')
-    .pipe(
-      map((responseData) =>{
-      
-     const postArray: Post[] = [];
-     for(const key in responseData){
-
-       if(responseData.hasOwnProperty(key)){
-         postArray.push({...responseData[key],id: key});
-       }
-
-     }
-     return postArray;
-    }))
-    .subscribe(
-      allPosts=>{
-        // console.log(posts);
-        this.loadedPosts = allPosts;
-        this.isFetching = false;
-      }
-    );
   }
 
   listGrpClr(i: number){
@@ -71,6 +38,15 @@ export class AppComponent implements OnInit {
       'list-group-item-success': i%2==0,
       'list-group-item-info': i%2!=0
     };
+  }
+
+  private subscribeReadPost(){
+    this.postServ.readPost().subscribe(
+      allPosts=>{
+        // console.log(posts);
+        this.loadedPosts = allPosts;
+        this.isFetching = false;
+      });
   }
 
 }
