@@ -11,6 +11,7 @@
             id="title"
             required
             ngModel
+            minlength="5" maxlength="13"
             name="title"
           >
         </div>
@@ -21,6 +22,7 @@
             id="content"
             required
             ngModel
+            minlength="13" maxlength="100"
             name="content"
           ></textarea>
         </div>
@@ -40,12 +42,13 @@
 
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <button class="btn btn-outline-success" (click)="onFetchPosts()">
+      <button class="btn btn-outline-success" type="button" 
+      (click)="onFetchPosts()">
         Fetch Posts
       </button>
       &nbsp;
       <button
-        class="btn btn-outline-danger"
+        class="btn btn-outline-danger" type="button"
         [disabled]="loadedPosts.length < 1"
         (click)="onClearPosts()">
         Clear Posts
@@ -55,7 +58,18 @@
   <hr>
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <p>No posts available!</p>
+      <p *ngIf="loadedPosts.length < 1 && !isFetching">No posts available!</p>
+      <ul class="list-group" *ngIf="loadedPosts.length >= 1 && !isFetching">
+        <li class="list-group-item list-group-item-action"
+        [ngClass]=listGrpClr(i)
+        *ngFor="let post of loadedPosts; index as i">
+          <h3> <strong> {{post.title}} </strong></h3>
+          <p><em> {{post.content}} </em></p>
+        </li>
+      </ul>
+      <div *ngIf="isFetching">
+        <app-heart-beat></app-heart-beat>
+      </div>
     </div>
   </div>
 </div>

@@ -5,10 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HeartBeatComponent } from './loading-spinner/heart-beat/heart-beat.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeartBeatComponent
   ],
   imports: [
     BrowserModule,

@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+import { Post } from './post.model';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
+  isFetching: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +21,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  onCreatePost(postData: { title: string; content: string }) {
+  onCreatePost(postData: Post) {
     // post Http request
     this.http.post(
       'https://angular-study-http.firebaseio.com/posts.json', 
@@ -38,10 +41,13 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts(){
-    this.http.get('https://angular-study-http.firebaseio.com/posts.json')
-    .pipe(map(responseData=>{
+    this.isFetching=true;
+
+    this.http.get<{[key: string]: Post}>('https://angular-study-http.firebaseio.com/posts.json')
+    .pipe(
+      map((responseData) =>{
       
-     const postArray=[];
+     const postArray: Post[] = [];
      for(const key in responseData){
 
        if(responseData.hasOwnProperty(key)){
@@ -52,11 +58,19 @@ export class AppComponent implements OnInit {
      return postArray;
     }))
     .subscribe(
-      posts=>{
-        console.log(posts);
+      allPosts=>{
+        // console.log(posts);
+        this.loadedPosts = allPosts;
+        this.isFetching = false;
       }
     );
   }
 
+  listGrpClr(i: number){
+    return{
+      'list-group-item-success': i%2==0,
+      'list-group-item-info': i%2!=0
+    };
+  }
 
 }
