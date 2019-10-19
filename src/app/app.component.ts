@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching: boolean = false;
   @ViewChild('postForm', {static: true}) postForm: NgForm;
+  error=null;
 
   constructor(private postServ: PostServiceService) {}
 
@@ -55,6 +56,9 @@ export class AppComponent implements OnInit {
         // console.log(posts);
         this.loadedPosts = allPosts;
         this.isFetching = false;
+      }, error =>{
+        this.error = error.error['error'];
+        console.log(error);
       });
   }
 

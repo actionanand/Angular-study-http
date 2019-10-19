@@ -67,12 +67,16 @@
           <p><em> {{post.content}} </em></p>
         </li>
       </ul>
-      <div *ngIf="isFetching">
+      <div *ngIf="isFetching && !error">
         <app-charging></app-charging>
         <!-- <app-heart-spinner></app-heart-spinner> -->
         <!-- <app-tapping-hands></app-tapping-hands> -->
         <!-- <app-heart-beat></app-heart-beat> -->
         <!-- <app-couple-dots></app-couple-dots> -->
+      </div>
+      <div class="alert alert-danger">
+        <h3>An error occured</h3>
+        <p>{{error}}</p>
       </div>
     </div>
   </div>
