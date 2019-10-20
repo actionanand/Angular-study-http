@@ -11,6 +11,7 @@ import { HeartSpinnerComponent } from './loading-spinner/heart-spinner/heart-spi
 import { TappingHandsComponent } from './loading-spinner/tapping-hands/tapping-hands.component';
 import { ChargingComponent } from './loading-spinner/charging/charging.component';
 import { AuthInterceptorService } from './auth-interceptor.service';
+import { LogInterceptorService } from './log-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,11 @@ import { AuthInterceptorService } from './auth-interceptor.service';
     {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
+    multi: true
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: LogInterceptorService,
     multi: true
   }
 ],

@@ -1,5 +1,7 @@
 # AngularStudyHttp
 
+This study part includes HTTP requests, interceptors, css loading spinner
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.4.
 
 ## Development server
