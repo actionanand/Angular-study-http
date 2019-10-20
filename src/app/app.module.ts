@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ import { CoupleDotsComponent } from './loading-spinner/couple-dots/couple-dots.c
 import { HeartSpinnerComponent } from './loading-spinner/heart-spinner/heart-spinner.component';
 import { TappingHandsComponent } from './loading-spinner/tapping-hands/tapping-hands.component';
 import { ChargingComponent } from './loading-spinner/charging/charging.component';
+import { AuthInterceptorService } from './auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,13 @@ import { ChargingComponent } from './loading-spinner/charging/charging.component
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

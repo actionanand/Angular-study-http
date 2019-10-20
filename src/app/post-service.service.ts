@@ -22,7 +22,8 @@ export class PostServiceService {
     {
       // params: new HttpParams().set('print', 'pretty')
       // observe: 'body'
-      observe: 'response'
+      observe: 'response',
+      responseType: 'json'
     })
     .subscribe(responseData =>{
       console.log(responseData)
